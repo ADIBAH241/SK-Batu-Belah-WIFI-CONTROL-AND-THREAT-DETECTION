@@ -1,0 +1,51 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+session_start();
+include("db.php");
+include("session_check.php");
+
+if($_SESSION['role'] != 'admin'){
+    header("Location: login.php");
+    exit();
+}
+
+$domain = trim($_POST['domain'] ?? '');
+$filter_type = trim($_POST['filter_type'] ?? '');
+
+if($domain == '' || $filter_type == ''){
+    header("Location: configure_filter.php");
+    exit();
+}
+
+/* normalize domain */
+$domain = strtolower($domain);
+$domain = preg_replace('#^https?://#', '', $domain);
+$domain = preg_replace('#/.*$#', '', $domain);
+$domain = preg_replace('#^www\.#', '', $domain);
+
+$domain_safe = mysqli_real_escape_string($conn, $domain);
+$filter_type_safe = mysqli_real_escape_string($conn, $filter_type);
+
+/* check existing domain */
+$check = mysqli_query($conn, "SELECT * FROM filters WHERE domain='$domain_safe' LIMIT 1");
+
+if(mysqli_num_rows($check) > 0){
+    /* update existing domain status */
+    mysqli_query($conn, "
+        UPDATE filters
+        SET filter_type='$filter_type_safe', created_at=NOW()
+        WHERE domain='$domain_safe'
+    ");
+} else {
+    /* insert new domain */
+    mysqli_query($conn, "
+        INSERT INTO filters(domain, filter_type, created_at)
+        VALUES('$domain_safe', '$filter_type_safe', NOW())
+    ");
+}
+
+header("Location: filter_success.php");
+exit();
+?>

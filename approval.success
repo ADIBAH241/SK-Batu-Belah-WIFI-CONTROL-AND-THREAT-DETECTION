@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body style="text-align:center;background:url('images/wallpaper.png');background-size:cover;">
+
+<img src="images/logo.png" width="100">
+
+<h2>Approval Completed ✅</h2>
+
+<a href="admin_dashboard.php">
+<button>Return to Dashboard</button>
+</a>
+
+</body>
+</html>

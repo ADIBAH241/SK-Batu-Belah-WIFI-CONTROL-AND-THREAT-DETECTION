@@ -1,0 +1,99 @@
+<?php
+session_start();
+if(!isset($_SESSION['role']) || $_SESSION['role'] != 'student'){
+    header("Location: login.php");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Dashboard</title>
+<style>
+
+body{
+    font-family:Arial;
+    text-align:center;
+    margin:0;
+    min-height:100vh;
+    background-image:url("images/walpaperr.png");
+    background-repeat:no-repeat;
+    background-position:center top;
+    background-size:100% 100%;
+}
+
+.container{
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+
+.logo{
+width:100px;
+margin-bottom:10px;
+}
+
+.menu{
+display:flex;
+flex-direction:column;
+gap:15px;
+align-items:center;
+margin-top:25px;
+}
+
+.menu button{
+width:260px;
+padding:12px;
+border-radius:25px;
+border:1px solid black;
+background:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.menu button:hover{
+background:#2b78e4;
+color:white;
+transform:scale(1.05);
+}
+
+.logout{
+background:#d9534f !important;
+color:white;
+border:none !important;
+}
+
+.footer{
+position:absolute;
+bottom:10px;
+width:100%;
+text-align:center;
+font-size:14px;
+color:black;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="box">
+        <img src="images/logo.png" class="logo">
+        <h2>👋 Welcome , <?php echo htmlspecialchars($_SESSION['name']); ?></h2>
+
+        <div class="menu">
+            <button onclick="location.href='browse_internet.php'">Browse Internet</button>
+            <button onclick="location.href='student_notification.php'">Notification</button>
+            <button class="logout" onclick="location.href='logout.php'">Logout</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer">© 2026 Sekolah Kebangsaan Batu Belah</div>
+</body>
+</html>
